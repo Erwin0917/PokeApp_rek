@@ -17,7 +17,7 @@ class App extends Component {
 				<GlobalStyle />
 				<div className="App">
 					<Logo />
-					<BrowserRouter>
+					<BrowserRouter basename={process.env.PUBLIC_URL}>
 						<Switch>
 							<Route exact path={Routes.HOME} component={MainPage} />
 							<Route path={Routes.POKEMON} component={PokemonDetails} />
