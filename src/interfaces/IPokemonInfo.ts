@@ -91,7 +91,7 @@ export interface ISprites {
 	front_shiny_female: string;
 }
 
-interface IStats {
+export interface IStats {
 	base_stat: number;
 	effort: number;
 	stat: {

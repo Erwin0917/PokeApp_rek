@@ -4,7 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 import { TextField } from "@material-ui/core";
 import { TextFieldProps } from "@material-ui/core/TextField";
-import { IPokemons } from "../../interfaces/IPokemons";
+import { IFetchDefElement } from "../../interfaces/IFetchDefElement";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 
@@ -30,8 +30,8 @@ interface RenderSuggestionProps {
 	highlightedIndex: number | null;
 	index: number;
 	itemProps: MenuItemProps<"div", { button?: never }>;
-	selectedItem: IPokemons["name"];
-	suggestion: IPokemons;
+	selectedItem: IFetchDefElement["name"];
+	suggestion: IFetchDefElement;
 }
 
 function renderSuggestion(suggestionProps: RenderSuggestionProps) {
@@ -85,7 +85,7 @@ function getSuggestions(
 
 type Props = RouteComponentProps<{}> &
 	React.HTMLProps<React.HTMLAttributes<HTMLElement>> & {
-		suggestions: IPokemons[];
+		suggestions: IFetchDefElement[];
 	};
 
 function SearchInput(props: Props) {
@@ -110,14 +110,13 @@ function SearchInput(props: Props) {
 					selectedItem
 				}) => {
 					const { onBlur, onFocus, ...inputProps } = getInputProps({
-						placeholder: "Search for a pokemon"
+						placeholder: "Search in the list"
 					});
 
 					return (
 						<div>
 							{renderInput({
 								fullWidth: true,
-								label: "Pokemons",
 								InputLabelProps: getLabelProps({ shrink: true } as any),
 								InputProps: { onBlur, onFocus },
 								inputProps

@@ -1,4 +1,4 @@
-import { IAbility, ITypes } from "./IPokemonInfo";
+import { IAbility, ITypes, IStats } from "./IPokemonInfo";
 
 export interface IPokemonDetails {
 	abilities: IAbility[];
@@ -7,4 +7,5 @@ export interface IPokemonDetails {
 	name: string;
 	weight: number;
 	types: ITypes[];
+	stats: IStats[];
 }

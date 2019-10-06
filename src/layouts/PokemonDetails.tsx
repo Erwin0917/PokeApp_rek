@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import pokeApi from "../api/pokeApiConfig";
 import { RouteComponentProps } from "react-router-dom";
-import { IPokemonInfo, IAbility, ITypes } from "../interfaces/IPokemonInfo";
+import {
+	IPokemonInfo,
+	IAbility,
+	ITypes,
+	IStats
+} from "../interfaces/IPokemonInfo";
 import { connect } from "react-redux";
 import { MainStore } from "../reducers/mainReducer";
 import PokemonActions from "../actions/PokemonActions";
@@ -9,34 +14,73 @@ import PokemonUtil from "../utils/PokemonUtil";
 import { IPokemonDetails } from "../interfaces/IPokemonDetails";
 import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
-import {
-	Avatar,
-	Table,
-	TableHead,
-	TableRow,
-	TableCell,
-	TableBody
-} from "@material-ui/core";
+import { Avatar, LinearProgress } from "@material-ui/core";
 
 const StyledPokemonInfoWrapper = styled.div`
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
+	max-width: 800px;
+	background-color: white;
+	border-radius: 8px;
+	margin: 0 auto;
+	margin-top: 80px;
+	padding: 25px;
 `;
 
 const StyledAvatar = styled(Avatar)`
 	&&& {
-		width: 150px;
-		height: 150px;
+		position: absolute;
+		width: 120px;
+		height: 120px;
+		left: 20px;
+		top: -60px;
+		background: #ffde00;
+		border: 4px solid white;
 	}
 `;
 
-const StyledTable = styled(Table)`
+const StyledTitle = styled(Typography)`
+	position: absolute;
+	left: 150px;
+	color: white;
+	top: -60px;
+	text-transform: capitalize;
+	font-weight: 900;
+`;
+
+const StyledBasicInfo = styled.div`
+	display: flex;
+	padding-left: 130px;
+	margin-bottom: 40px;
+`;
+
+const StyledSubTitle = styled(Typography)`
 	&&& {
-		width: 100%;
+		font-weight: bold;
+		margin-right: 20px;
 	}
 `;
 
+const StyledInfoBox = styled.span`
+	padding: 5px 7px;
+	border-radius: 4px;
+	color: white;
+	background-color: ${({ color }) => color};
+	text-transform: capitalize;
+`;
+
+const StyledStatItem = styled.div`
+	width: 100%;
+	padding: 15px 0;
+	border-bottom: 1px solid #d1d1d1;
+	text-transform: capitalize;
+
+	b {
+		font-weight: bold;
+	}
+`;
 interface State {
 	currentPokemon: IPokemonDetails;
 }
@@ -53,11 +97,11 @@ class PokemonDetails extends Component<Props, State> {
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		this.setCurrentPokemon();
 	}
 
-	setCurrentPokemon = () => {
+	private setCurrentPokemon = () => {
 		const pokemonName = this.props.match.params.name;
 		let currentPokemon = PokemonUtil.getByName(pokemonName);
 		if (!currentPokemon) {
@@ -73,15 +117,8 @@ class PokemonDetails extends Component<Props, State> {
 			});
 		}
 	};
-	renderDetails = () => {
-		const {
-			name,
-			avatarUrl,
-			abilities,
-			height,
-			weight,
-			types
-		} = this.state.currentPokemon;
+	private renderDetails = () => {
+		const { name, avatarUrl, abilities, types } = this.state.currentPokemon;
 
 		let abilitiesName: string[] = [];
 		abilities.forEach((ability: IAbility) => {
@@ -95,30 +132,54 @@ class PokemonDetails extends Component<Props, State> {
 		return (
 			<StyledPokemonInfoWrapper>
 				<StyledAvatar src={avatarUrl} alt={`Avatar of ${name}`}></StyledAvatar>
-				<Typography variant="h2" component="h1">
+				<StyledTitle variant="h2" component="h1">
 					{name}
-				</Typography>
-				<StyledTable>
-					<TableHead>
-						<TableRow>
-							<TableCell align="left">Name</TableCell>
-							<TableCell align="left">Abilities</TableCell>
-							<TableCell align="left">Type</TableCell>
-							<TableCell align="left">Height&nbsp;(m)</TableCell>
-							<TableCell align="left">Weight&nbsp;(kg)</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						<TableRow>
-							<TableCell align="left">{name}</TableCell>
-							<TableCell align="left">{abilitiesName.join(", ")}</TableCell>
-							<TableCell align="left">{typesName.join(", ")}</TableCell>
-							<TableCell align="left">{(height / 10).toFixed(2)}</TableCell>
-							<TableCell align="left">{(weight / 10).toFixed(1)}</TableCell>
-						</TableRow>
-					</TableBody>
-				</StyledTable>
+				</StyledTitle>
+				<StyledBasicInfo>
+					<StyledSubTitle>
+						Type:{" "}
+						<StyledInfoBox color="#CC0000">
+							{typesName.join(", ")}
+						</StyledInfoBox>
+					</StyledSubTitle>
+					<StyledSubTitle>
+						Ability:{" "}
+						<StyledInfoBox color="#B3A125">
+							{abilitiesName.join(", ")}
+						</StyledInfoBox>
+					</StyledSubTitle>
+				</StyledBasicInfo>
+				{this.renderStats()}
 			</StyledPokemonInfoWrapper>
+		);
+	};
+
+	private renderStats = () => {
+		const { stats, height, weight } = this.state.currentPokemon;
+
+		return (
+			<>
+				<StyledStatItem>
+					<Typography variant="body1">
+						Height: <b>{(height / 10).toFixed(2)}m</b>
+					</Typography>
+				</StyledStatItem>
+				<StyledStatItem>
+					<Typography variant="body1">
+						Weight: <b>{(weight / 10).toFixed(1)}kg</b>
+					</Typography>
+				</StyledStatItem>
+				{stats.map((stat: IStats) => {
+					return (
+						<StyledStatItem key={stat.stat.name}>
+							<Typography variant="body1">
+								{stat.stat.name}: <b>{stat.base_stat}</b>
+							</Typography>
+							<LinearProgress variant="determinate" value={stat.base_stat} />
+						</StyledStatItem>
+					);
+				})}
+			</>
 		);
 	};
 

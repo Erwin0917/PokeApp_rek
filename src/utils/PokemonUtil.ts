@@ -1,3 +1,5 @@
+import { IStats } from "./../interfaces/IPokemonInfo";
+import { IFetchDefElement } from "./../interfaces/IFetchDefElement";
 import { IPokemonInfo, ITypes, IAbility } from "../interfaces/IPokemonInfo";
 import { MainStore } from "./../reducers/mainReducer";
 import mainStore from "../store/mainStore";
@@ -28,11 +30,20 @@ class PokemonUtil {
 		return pokemon.types;
 	}
 
+	public static getStats(pokemon: IPokemonInfo): IStats[] {
+		return pokemon.stats;
+	}
+
 	public static getByName(name: string) {
 		const store = mainStore.getState() as MainStore;
 		return store.pokemonsDetails.find(
 			(pokemon: IPokemonDetails) => pokemon.name === name
 		);
+	}
+
+	public static getAllPokemons(): IFetchDefElement[] {
+		const store = mainStore.getState() as MainStore;
+		return store.pokemons;
 	}
 }
 

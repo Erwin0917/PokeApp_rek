@@ -59,6 +59,7 @@ export const GlobalStyle = createGlobalStyle`
 
     body{
         padding:30px;
+        background-color: #FFDE00;
     }
 
 
