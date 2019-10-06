@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.js": "/PokeApp_rek/static/js/main.2aa5973d.chunk.js",
+    "main.js.map": "/PokeApp_rek/static/js/main.2aa5973d.chunk.js.map",
+    "runtime-main.js": "/PokeApp_rek/static/js/runtime-main.a42b73e7.js",
+    "runtime-main.js.map": "/PokeApp_rek/static/js/runtime-main.a42b73e7.js.map",
+    "static/js/2.bf4c2ae1.chunk.js": "/PokeApp_rek/static/js/2.bf4c2ae1.chunk.js",
+    "static/js/2.bf4c2ae1.chunk.js.map": "/PokeApp_rek/static/js/2.bf4c2ae1.chunk.js.map",
+    "index.html": "/PokeApp_rek/index.html",
+    "precache-manifest.0d707b2496823d428fe3e4ff4c3c1e7d.js": "/PokeApp_rek/precache-manifest.0d707b2496823d428fe3e4ff4c3c1e7d.js",
+    "service-worker.js": "/PokeApp_rek/service-worker.js",
+    "static/media/pokeLogo.png": "/PokeApp_rek/static/media/pokeLogo.1d15b24d.png"
+  }
+}
